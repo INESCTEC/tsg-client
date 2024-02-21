@@ -1,0 +1,33 @@
+name: "Docs Update"
+on:
+  push:
+    branches:
+      - github
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
+    - name: Prepare for documentation update
+      run: |
+        mkdir -p gh-pages
+        git clone https://github.com/${{ github.repository }}.git --branch gh-pages --single-branch gh-pages
+    - name: Copy documentation files
+      run: cp -r docs/_build/html/* gh-pages/
+    - name: Commit documentation changes
+      run: |
+        cd gh-pages
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update documentation" || true
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        branch: gh-pages
+        directory: gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}
