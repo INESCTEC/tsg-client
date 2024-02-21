@@ -1,0 +1,11 @@
+stages:
+  - lint
+
+flake8:
+  image:
+    name: python:3.9-slim-bookworm
+    entrypoint: [ "/usr/bin/env" ]
+  stage: lint
+  script:
+    - pip install -r requirements.txt
+    - flake8

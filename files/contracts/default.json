@@ -1,0 +1,30 @@
+{
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    },
+    "@type": "ids:ContractOffer",
+    "@id": "https://w3id.org/idsa/autogen/contractOffer/8e9c1381-e9f4-4eae-a015-751faf7ed6d4",
+    "ids:permission": [
+        {
+            "@type": "ids:Permission",
+            "@id": "https://w3id.org/idsa/autogen/permission/0864deac-91d0-4af4-9965-bdecc3bf9c76",
+            "ids:action": [
+                {
+                    "@id": "https://w3id.org/idsa/code/USE"
+                },
+                {
+                    "@id": "https://w3id.org/idsa/code/READ"
+                }
+            ]
+        }
+    ],
+    "ids:contractStart": {
+        "@value": "2023-01-01T00:00:00.000+00:00",
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+    },
+    "ids:contractEnd": {
+        "@value": "2023-12-31T00:00:00.000+00:00",
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+    }
+}
