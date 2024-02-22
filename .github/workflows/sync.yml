@@ -17,4 +17,4 @@ jobs:
         source_branch: 'github'
         commit_message: 'Update main branch'
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required
+        GITHUB_TOKEN: ${{ secrets.PAT }} # Required
