@@ -31,8 +31,8 @@ It provides a simple and easy-to-use interface for tasks such as:
 
 ## Documentation & Examples
 
-A detailed documentation is available in the [docs](docs/) directory.
-Python examples (and respective description) are available in the [examples](examples/) directory.
+A detailed documentation is available [here](https://cpes-power-and-energy-systems.github.io/tsg-client/).
+Python example scripts (and respective description) are also available in the [examples](examples/) directory of the repository.
 
 
 ## Installation
