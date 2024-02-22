@@ -12,9 +12,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Push to main
+      - name: Fetch main branch
+        run: git fetch origin main
+
+      - name: Merge changes into main
         run: |
           git checkout main
           git merge --no-ff ${{ github.ref }}
-          git push origin main
+
+      - name: Push changes to main
+        run: git push origin main
 
