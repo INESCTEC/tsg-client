@@ -6,20 +6,17 @@ on:
       - github
 
 jobs:
-  sync-branches:
+  sync:
+    permissions: write-all
     runs-on: ubuntu-latest
-    name: Syncing branches
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
-      - name: Set up Node
-        uses: actions/setup-node@v1
+
+      - name: Sync branches
+        uses: TreTuna/sync-branches@1.4.0
         with:
-          node-version: 12
-      - name: Opening pull request
-        id: pull
-        uses: tretuna/sync-branches@1.2.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: 'github'
-          TO_BRANCH: 'main'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FROM_BRANCH: github
+          TO_BRANCH: main
