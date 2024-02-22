@@ -1,4 +1,4 @@
-name: automerge
+name: Auto merge branches
 on:
   pull_request:
     types:
