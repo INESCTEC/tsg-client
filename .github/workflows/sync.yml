@@ -18,7 +18,7 @@ jobs:
       - name: Merge changes into main
         run: |
           git checkout main
-          git merge --no-ff ${{ github.ref }}
+          git merge ${{ github.ref }}
 
       - name: Push changes to main
         run: git push origin main
