@@ -17,6 +17,7 @@ jobs:
       - name: Sync branches
         uses: TreTuna/sync-branches@1.4.0
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TOKEN: ${{ secrets.PAT }}
           FROM_BRANCH: github
           TO_BRANCH: main
