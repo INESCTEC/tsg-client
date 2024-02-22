@@ -1,20 +1,20 @@
-name: Synchronize branches
+name: Push to Main
 
-on: 
+on:
   push:
-      branches:
-         - github
+    branches:
+      - github
 
 jobs:
-  build:
+  push_to_main:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Push github branch to main
-      uses: codingforentrepreneurs/action-branch-to-branch@main
-      with:
-        dest_branch: 'main'
-        source_branch: 'github'
-        commit_message: 'Update main branch'
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT }} # Required
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Push to main
+        run: |
+          git checkout main
+          git merge --no-ff ${{ github.ref }}
+          git push origin main
+
