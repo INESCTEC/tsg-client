@@ -15,7 +15,7 @@ setup(
     packages=['tsg_client', 'tsg_client.controllers', 'tsg_client.utils'],
     url='',
     license='',
-    author='Carolina Catorze, Vasco Maia, José Luis Rodrigues, José Ricardo Andrade',
+    author='Carolina Catorze, Vasco Guedes, José Luis Rodrigues, José Ricardo Andrade',
     author_email="""
         - carolina.catorze@inesctec.pt
         - vasco.r.maia@inesctec.pt
