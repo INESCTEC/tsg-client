@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # Example of external connector configs (TNO Playground)
     EXTERNAL_CONNECTOR = {
         "CONNECTOR_ID": 'urn:playground:tsg:connectors:TestConnector',
-        "ACCESS_URL": 'https://test-connector.playground.dataspac.es/router',
+        "ACCESS_URL": 'https://test-connector.playground.dataspac.es',
         "AGENT_ID": 'urn:playground:tsg:TNO'
     }
 
@@ -54,15 +54,35 @@ if __name__ == "__main__":
         agent_id=config['AGENT_ID']
     )
 
-    # Execute external OpenAPI request:
-    api_version = "0.9.2"
-    endpoint = "uuid"
+    # Get external connector info (self-descriptions):
+    description = conn.get_connector_selfdescription(
+        access_url=EXTERNAL_CONNECTOR['ACCESS_URL'],
+        connector_id=EXTERNAL_CONNECTOR['CONNECTOR_ID'],
+        agent_id=EXTERNAL_CONNECTOR['AGENT_ID']
+    )
 
+    # Get external connector OpenAPI specs:
+    api_version = "0.9.2"
+    open_api_specs = conn.get_openapi_specs(description, api_version)
+
+    # Get first API specification:
+    open_api_specs = open_api_specs[0]
+    example_endpoint = open_api_specs['endpoints'][-1]
+    example_agent_id = open_api_specs['agent']
+
+    print(f"""
+    Performing a request to:
+    - Agent ID: {example_agent_id}
+    - API Version: {api_version}
+    - Endpoint: {example_endpoint}
+    """)
+
+    # Execute external OpenAPI request:
     response = conn.openapi_request(
         external_access_url=EXTERNAL_CONNECTOR['ACCESS_URL'],
-        external_connector_id=EXTERNAL_CONNECTOR['CONNECTOR_ID'],
+        data_app_agent_id=example_agent_id,
         api_version=api_version,
-        endpoint=endpoint,
+        endpoint=example_endpoint,
         params="",
         method="get"
     )

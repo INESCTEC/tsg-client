@@ -7,12 +7,6 @@ reflect a general purpose that can solve other similar problems and not a
 specific one. The only thing you need to do is to change the base URL in the
 external_open_api_request.py file to match your server.
 
-Continue the work in the external_open_api_request.py file. You can use the RequestController class
-to make requests to the server. You may create helper functions in other files
-that can also meet general problem-solving.
-
-author: andre.f.garcia@inesctec.pt
-
 """
 
 import requests
@@ -65,10 +59,19 @@ class RequestController:
                      f"| headers: {headers} "
                      f"| status: {response.status_code}")
 
-        if expected_status_code and response.status_code != expected_status_code:
+        if expected_status_code and (response.status_code != expected_status_code):
             raise Exception(f"Expected status_code {expected_status_code}, "
-                            f"but got {response.status_code},"
-                            f"response {response.content}")
+                            f"but got status_code {response.status_code}. "
+                            f"Response content: {response.content}")
+        elif expected_status_code and (response.status_code == expected_status_code):
+            # Check if response has JSON content
+            try:
+                response.json()
+            except requests.exceptions.JSONDecodeError:
+                raise Exception(
+                    f"Response does not contain any JSON object. "
+                    f"Response status_code: {response.status_code}. "
+                    f"Response content: {response.content}")
 
         return response
 
