@@ -1,5 +1,5 @@
-<div align="center">
-  <img src="/docs/source/_static/logo.png"  align="left" width="50%" height="auto">
+<div align="left">
+  <img src="/docs/source/_static/logo.png"  align="middle" width="50%" height="auto">
 </div>
 
 -----------------------------------------------------
