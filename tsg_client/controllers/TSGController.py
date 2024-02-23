@@ -89,10 +89,6 @@ class TSGController:
             selfdescription = "error"
             logger.exception(f"Error creating SelfDescription: {ve}")
 
-        # todo: it should be possible to perform this request without the
-        #  access url being specified (i.e., the Metadata Broker should provide
-        #  this info given the connector ID) -- confirm
-
         return selfdescription
 
     @staticmethod
