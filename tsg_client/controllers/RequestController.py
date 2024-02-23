@@ -59,13 +59,11 @@ class RequestController:
                      f"| headers: {headers} "
                      f"| status: {response.status_code}")
 
-        if (expected_status_code
-                and (response.status_code != expected_status_code)):
+        if expected_status_code and (response.status_code != expected_status_code):
             raise Exception(f"Expected status_code {expected_status_code}, "
                             f"but got status_code {response.status_code}. "
                             f"Response content: {response.content}")
-        elif (expected_status_code
-              and (response.status_code == expected_status_code)):
+        elif expected_status_code and (response.status_code == expected_status_code):
             # Check if response has JSON content
             try:
                 response.json()
