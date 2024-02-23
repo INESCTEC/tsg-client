@@ -70,4 +70,3 @@ if __name__ == "__main__":
           f"catalog {self_description.catalogs[0].id} with "
           f"resource type {resource_type} has this list artifacts:")
     pprint(artifacts)
-
