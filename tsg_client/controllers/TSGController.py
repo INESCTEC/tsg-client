@@ -45,8 +45,7 @@ class TSGController:
         self.__validate_connection()
 
     def __repr__(self):
-        return (f"TSGController(api_key={self.api_key}, "
-                f"connector_id={self.connector_id}, "
+        return (f"TSGController(connector_id={self.connector_id}, "
                 f"access_url={self.access_url}, "
                 f"agent_id={self.agent_id})")
 
@@ -75,9 +74,12 @@ class TSGController:
         :type agent_id: str
         :return: SelfDescription object
         """
+
+        _access_url = f"{access_url}/selfdescription"
+
         params = {
             "connectorId": connector_id,
-            "accessUrl": access_url,
+            "accessUrl": _access_url,
             "agentId": agent_id
         }
         rsp = self.controller.get(endpoint=self.endpoints.DESCRIPTION,
@@ -90,6 +92,10 @@ class TSGController:
             logger.exception(f"Error creating SelfDescription: {ve}")
 
         return selfdescription
+
+    @staticmethod
+    def parse_resource_catalogs(self_description):
+        return self_description.catalogs
 
     @staticmethod
     def parse_catalog_artifacts(self_description,
@@ -127,6 +133,10 @@ class TSGController:
                     continue
                 for resource in catalog.offeredResource:
                     if resource.contract_offer == '':
+                        logger.warning(f"Resource {resource.artifact_id} "
+                                       f"has no registered "
+                                       f"contract offer and "
+                                       f"will be ignored.")
                         continue
                     contract_offer_str = resource.contract_offer
                     contract_offer_str_fixed = contract_offer_str.replace("'", "\"")
@@ -367,6 +377,8 @@ class TSGController:
 
         :return: Response object
         """
+
+        _access_url = f"{external_access_url}/router"
 
         _headers = {
             'Forward-AccessURL': external_access_url,
