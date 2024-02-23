@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # Example of external connector configs (TNO Playground)
     EXTERNAL_CONNECTOR = {
         "CONNECTOR_ID": 'urn:playground:tsg:connectors:TestConnector',
-        "ACCESS_URL": 'https://test-connector.playground.dataspac.es/router',
+        "ACCESS_URL": 'https://test-connector.playground.dataspac.es',
         "AGENT_ID": 'urn:playground:tsg:TNO'
     }
 
