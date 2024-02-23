@@ -1,8 +1,9 @@
-import json
 import os
+import json
+import requests
 import urllib.parse
-from datetime import datetime
 
+from datetime import datetime
 from loguru import logger
 
 from tsg_client.controllers.RequestController import RequestController
@@ -354,12 +355,29 @@ class TSGController:
 
                 for off_res in offered_resource:
                     if off_res.path[-len(api_version):] == api_version:
-                        _docs = off_res.documentation
-                        endpoint_documentation_urls.append(_docs)
+                        _openapi_url = off_res.documentation
+                        _path = off_res.path
+                        _agent = _path.split("/")[1:-1][0]
+                        _version = _path.split("/")[-1]
+
+                        try:
+                            _endpoints = list(requests.get(_openapi_url).json()["paths"].keys())
+                        except Exception:
+                            _endpoints = None
+
+                        endpoint_documentation_urls.append(
+                            {
+                                "api_version": _version,
+                                "agent": _agent,
+                                "path": _agent,
+                                "openapi_url": _openapi_url,
+                                "endpoints": _endpoints
+                            }
+                        )
 
         return endpoint_documentation_urls
 
-    def openapi_request(self, external_access_url, external_connector_id,
+    def openapi_request(self, external_access_url, data_app_agent_id,
                         api_version, endpoint, params="", method="get",
                         headers=None,
                         data=None):
@@ -367,7 +385,7 @@ class TSGController:
         Execute an OpenAPI request to an external connector
 
         :param external_access_url: External access URL
-        :param external_connector_id: External connector ID
+        :param data_app_agent_id: Data App Agent (retrieved from path)
         :param api_version: External connector Data APP API version
         :param endpoint: Target external connector REST API server endpoint
         :param params: Request query parameters
@@ -378,13 +396,13 @@ class TSGController:
         :return: Response object
         """
 
-        _access_url = f"{external_access_url}/router"
+        _external_access_urll = f"{external_access_url}/router"
 
         _headers = {
-            'Forward-AccessURL': external_access_url,
+            'Forward-AccessURL': _external_access_urll,
             'Forward-Sender': self.agent_id,
-            'Forward-To': external_connector_id,
-            'Forward-Recipient': external_connector_id
+            'Forward-To': data_app_agent_id,
+            'Forward-Recipient': data_app_agent_id
         }
 
         if headers is None:
