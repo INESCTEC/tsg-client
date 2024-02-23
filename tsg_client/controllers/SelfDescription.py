@@ -87,13 +87,9 @@ class SelfDescription:
     @staticmethod
     def from_dict(obj: Any) -> 'SelfDescription':
         """
-        Converts self-description dictionary into a SelfDescription object
-        with some of the most relevant fields.
 
-        :param obj: self-description dictionary
-        :return: SelfDescription object
+        :rtype: object
         """
-
         try:
             _id = str(obj.get("@id"))
             _title = str(obj.get("ids:title")[0].get("@value"))

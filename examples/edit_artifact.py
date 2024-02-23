@@ -43,6 +43,13 @@ if __name__ == "__main__":
     # Load environment variables:
     config = dotenv_values('.env')
 
+    # Example of external connector configs (TNO Playground)
+    EXTERNAL_CONNECTOR = {
+        "CONNECTOR_ID": 'urn:playground:tsg:connectors:TestConnector',
+        "ACCESS_URL": 'https://test-connector.playground.dataspac.es/selfdescription',
+        "AGENT_ID": 'urn:playground:tsg:TNO'
+    }
+
     # Connect to our TSG connector:
     conn = TSGController(
         api_key=config['API_KEY'],
@@ -56,7 +63,7 @@ if __name__ == "__main__":
     artifact_path = "<artifact_path>"
     artifact_description = "<description>"
     artifact_title = "<title>"
-    contract_offer_path = "./files/contracts/default.json"
+    contract_offer_path = "../files/contracts/default.json"
 
     # Read the contract offer content from the file:
     with open(contract_offer_path, 'r') as file:

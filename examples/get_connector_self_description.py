@@ -51,22 +51,3 @@ if __name__ == "__main__":
     print("-" * 79)
     print("> Connector Self Self Description:")
     pprint(self_description.to_dict())
-
-    # Get artifacts list of your connector self-description:
-    # Note: you can refine search using the filters below
-    resource_type = "ids:ContractOffer"
-    artifacts = conn.parse_catalog_artifacts(
-        self_description,
-        catalog_id=self_description.catalogs[0].id,
-        resource_type=resource_type,
-        creation_date_gt="2021-08-10T00:00:00.000Z",
-        creation_date_lt="2030-01-01T00:00:00.000Z",
-        return_last_artifact=True,
-        valid_contract_only=False
-    )
-
-    print("-" * 79)
-    print(f"> Connector {config['CONNECTOR_ID']} in "
-          f"catalog {self_description.catalogs[0].id} with "
-          f"resource type {resource_type} has this list artifacts:")
-    pprint(artifacts)

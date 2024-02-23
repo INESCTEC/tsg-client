@@ -1,7 +1,5 @@
 files/*
 examples/*
-!examples/files/artifacts/default.json
-!examples/files/contracts/default.json
 # IDE
 .idea/
 .vscode/

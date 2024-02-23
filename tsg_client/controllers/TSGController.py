@@ -1,9 +1,8 @@
-import os
 import json
-import requests
+import os
 import urllib.parse
-
 from datetime import datetime
+
 from loguru import logger
 
 from tsg_client.controllers.RequestController import RequestController
@@ -36,7 +35,7 @@ class TSGController:
         self.agent_id = agent_id
         self.metadata_broker_url = metadata_broker_url
 
-        # Start core container (connector) http requests controller:
+        # Start inter-connector http requests controller:
         self.endpoints = Endpoints()
         self.controller = RequestController(base_url=self.access_url,
                                             connector_id=self.connector_id,
@@ -46,7 +45,8 @@ class TSGController:
         self.__validate_connection()
 
     def __repr__(self):
-        return (f"TSGController(connector_id={self.connector_id}, "
+        return (f"TSGController(api_key={self.api_key}, "
+                f"connector_id={self.connector_id}, "
                 f"access_url={self.access_url}, "
                 f"agent_id={self.agent_id})")
 
@@ -59,6 +59,14 @@ class TSGController:
         except Exception as e:
             raise Exception(f"Error connecting to the TSG connector: {repr(e)}")
 
+    def list_dataspace_connectors(self):
+        """
+        Query the metadata broker to list available connectors by other
+        participants in the data space.
+        """
+        # todo: query metadatabroker & return list of available connectors
+        #  in this data space
+
     def get_connector_selfdescription(self,
                                       connector_id,
                                       access_url,
@@ -66,21 +74,10 @@ class TSGController:
         """
         Get self-descriptions from a connector from another dataspace
         participant, given its connector CONNECTOR_ID and ACCESS_URL.
-
-        :param connector_id: Connector ID
-        :type connector_id: str
-        :param access_url: Access URL
-        :type access_url: str
-        :param agent_id: Agent ID
-        :type agent_id: str
-        :return: SelfDescription object
         """
-
-        _access_url = f"{access_url}/selfdescription"
-
         params = {
             "connectorId": connector_id,
-            "accessUrl": _access_url,
+            "accessUrl": access_url,
             "agentId": agent_id
         }
         rsp = self.controller.get(endpoint=self.endpoints.DESCRIPTION,
@@ -92,11 +89,11 @@ class TSGController:
             selfdescription = "error"
             logger.exception(f"Error creating SelfDescription: {ve}")
 
-        return selfdescription
+        # todo: it should be possible to perform this request without the
+        #  access url being specified (i.e., the Metadata Broker should provide
+        #  this info given the connector ID) -- confirm
 
-    @staticmethod
-    def parse_resource_catalogs(self_description):
-        return self_description.catalogs
+        return selfdescription
 
     @staticmethod
     def parse_catalog_artifacts(self_description,
@@ -134,10 +131,6 @@ class TSGController:
                     continue
                 for resource in catalog.offeredResource:
                     if resource.contract_offer == '':
-                        logger.warning(f"Resource {resource.artifact_id} "
-                                       f"has no registered "
-                                       f"contract offer and "
-                                       f"will be ignored.")
                         continue
                     contract_offer_str = resource.contract_offer
                     contract_offer_str_fixed = contract_offer_str.replace("'", "\"")
@@ -171,14 +164,6 @@ class TSGController:
                           artifact_contract_offer):
         """
         Request Contract Agreement for a data artifact from another connector,
-
-        :param connector_id: Connector ID
-        :type connector_id: str
-        :param artifact_access_url: Artifact access URL
-        :type artifact_access_url: str
-        :param artifact_contract_offer: Artifact contract offer
-        :type artifact_contract_offer: str
-        :return: Contract Agreement ID
         """
         payload = {
             "connectorId": connector_id,
@@ -199,21 +184,6 @@ class TSGController:
         """
         Request a data artifact from another connector, given the artifact
          ACCESS_URL.
-
-        :param artifact_id: Artifact ID
-        :type artifact_id: str
-        :param artifact_access_url: Artifact access URL
-        :type artifact_access_url: str
-        :param connector_id: Connector ID
-        :type connector_id: str
-        :param agent_id: Agent ID
-        :type agent_id: str
-        :param contract_agreement_id: Contract agreement ID
-        :type contract_agreement_id: str
-        :param keep_original_format: Keep original format of the artifact (e.g., PDF, CSV, etc.)
-        :type keep_original_format: bool
-        :param file_path: Path to save the artifact file
-        :type file_path: str
         """
 
         params = {
@@ -251,15 +221,6 @@ class TSGController:
                               contract_offer):
         """
         Publish a data artifact for this connector
-
-        :param artifact: Artifact object
-        :type artifact: str
-        :param title: Artifact title
-        :type title: str
-        :param description: Artifact description
-        :type description: str
-        :param contract_offer: Contract offer
-        :type contract_offer: str
         """
         payload = {
             "artifact": artifact,
@@ -283,23 +244,11 @@ class TSGController:
 
         self.controller.delete(endpoint=endpoint, expected_status_code=200)
 
-    def edit_artifact(self, artifact_id,
-                      artifact, title,
+    def edit_artifact(self, artifact_id, artifact, title,
                       description,
                       contract_offer):
         """
         Edit an artifact from this connector
-
-        :param artifact_id: Artifact ID
-        :type artifact_id: str
-        :param artifact: Artifact object
-        :type artifact: str
-        :param title: Artifact title
-        :type title: str
-        :param description: Artifact description
-        :type description: str
-        :param contract_offer: Contract offer
-
         """
         payload = {
             "artifact": artifact,
@@ -317,11 +266,6 @@ class TSGController:
         return rsp.json()
 
     def get_connector_self_selfdescription(self):
-        """
-        Get self-description from this connector
-
-        :return: SelfDescription object
-        """
 
         rsp = self.controller.get(endpoint=self.endpoints.SELF_DESCRIPTION,
                                   expected_status_code=200)
@@ -335,14 +279,6 @@ class TSGController:
 
     @staticmethod
     def get_openapi_specs(external_self_description, api_version):
-        """
-        Get OpenAPI specs from an external connector self-description
-
-        :param external_self_description: External connector self-description
-        :param api_version: Data APP API version
-
-        :return: OpenAPI specs
-        """
 
         connector_id = external_self_description.id
         resource_catalog = external_self_description.catalogs
@@ -355,54 +291,21 @@ class TSGController:
 
                 for off_res in offered_resource:
                     if off_res.path[-len(api_version):] == api_version:
-                        _openapi_url = off_res.documentation
-                        _path = off_res.path
-                        _agent = _path.split("/")[1:-1][0]
-                        _version = _path.split("/")[-1]
-
-                        try:
-                            _endpoints = list(requests.get(_openapi_url).json()["paths"].keys())
-                        except Exception:
-                            _endpoints = None
-
-                        endpoint_documentation_urls.append(
-                            {
-                                "api_version": _version,
-                                "agent": _agent,
-                                "path": _agent,
-                                "openapi_url": _openapi_url,
-                                "endpoints": _endpoints
-                            }
-                        )
+                        _docs = off_res.documentation
+                        endpoint_documentation_urls.append(_docs)
 
         return endpoint_documentation_urls
 
-    def openapi_request(self, external_access_url, data_app_agent_id,
+    def openapi_request(self, external_access_url, external_connector_id,
                         api_version, endpoint, params="", method="get",
                         headers=None,
                         data=None):
-        """
-        Execute an OpenAPI request to an external connector
-
-        :param external_access_url: External access URL
-        :param data_app_agent_id: Data App Agent (retrieved from path)
-        :param api_version: External connector Data APP API version
-        :param endpoint: Target external connector REST API server endpoint
-        :param params: Request query parameters
-        :param method: Request type (get, post, put, delete)
-        :param headers: Request headers
-        :param data: Request payload
-
-        :return: Response object
-        """
-
-        _external_access_urll = f"{external_access_url}/router"
 
         _headers = {
-            'Forward-AccessURL': _external_access_urll,
+            'Forward-AccessURL': external_access_url,
             'Forward-Sender': self.agent_id,
-            'Forward-To': data_app_agent_id,
-            'Forward-Recipient': data_app_agent_id
+            'Forward-To': external_connector_id,
+            'Forward-Recipient': external_connector_id
         }
 
         if headers is None:
@@ -425,10 +328,6 @@ class TSGController:
         return rsp
 
     def query_metadata_broker(self):
-        """
-        Query the DS Metadata Broker for all registered connectors
-        :return: Metadata Broker HTTP Response (JSON)
-        """
 
         if not self.metadata_broker_url:
             raise Exception("No metadata broker url provided on "
