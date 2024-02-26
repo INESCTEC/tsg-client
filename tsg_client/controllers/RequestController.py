@@ -84,5 +84,8 @@ class RequestController:
     def put(self, endpoint, **kwargs):
         return self.request('PUT', endpoint, **kwargs)
 
+    def patch(self, endpoint, **kwargs):
+        return self.request('PATCH', endpoint, **kwargs)
+
     def delete(self, endpoint, **kwargs):
         return self.request('DELETE', endpoint, **kwargs)

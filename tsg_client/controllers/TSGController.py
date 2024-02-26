@@ -420,7 +420,9 @@ class TSGController:
         elif method == "put":
             rsp = self.controller.put(endpoint=full_endpoint, headers=headers, params=params, data=data)
         elif method == "delete":
-            rsp = self.controller.delete(endpoint=full_endpoint, headers=headers, params=params)  # noqa
+            rsp = self.controller.delete(endpoint=full_endpoint, headers=headers, params=params)
+        elif method == "patch":
+            rsp = self.controller.patch(endpoint=full_endpoint, headers=headers, params=params, data=data)
 
         return rsp
 
