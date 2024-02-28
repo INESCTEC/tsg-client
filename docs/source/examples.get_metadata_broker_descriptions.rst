@@ -8,4 +8,4 @@ Get self-descriptions from connectors registered in the Metadata Broker
 .. literalinclude:: ../../examples/get_metadata_broker_descriptions.py
     :language: python
     :linenos:
-    :lines: 31-
+    :lines: 29-

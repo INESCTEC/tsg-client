@@ -7,4 +7,4 @@ Post artifact
 .. literalinclude:: ../../examples/post_artifact.py
     :language: python
     :linenos:
-    :lines: 33-
+    :lines: 35-

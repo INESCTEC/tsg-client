@@ -1,8 +1,8 @@
-# Client connector info
+# Client connector info:
 API_KEY=insert_api_key_here
 ACCESS_URL=insert_access_url_here
 CONNECTOR_ID=insert_connector_id_here
 AGENT_ID=insert_agent_id_here
-EXTERNAL_CONNECTOR_ID=insert_connector_id_here
-EXTERNAL_AGENT_ID=insert_agent_id_here
-EXTERNAL_ACCESS_URL=insert_access_url_here
+
+# Metadata Broker info:
+METADATA_BROKER_URL=insert_metadata_broker_url_here

@@ -7,4 +7,4 @@ Edit artifact
 .. literalinclude:: ../../examples/edit_artifact.py
     :language: python
     :linenos:
-    :lines: 33-
+    :lines: 35-

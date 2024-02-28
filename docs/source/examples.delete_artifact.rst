@@ -7,4 +7,4 @@ Delete artifact
 .. literalinclude:: ../../examples/delete_artifact.py
     :language: python
     :linenos:
-    :lines: 29-
+    :lines: 31-

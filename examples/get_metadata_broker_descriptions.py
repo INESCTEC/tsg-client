@@ -2,7 +2,7 @@
 
 Example - Get self-descriptions of an external connector
 
-Last update: 2024-01-27
+Last update: 2024-02-28
 
 This request retrieves the self-descriptions of connectors registered in the
  metadata broker.
@@ -53,7 +53,10 @@ if __name__ == "__main__":
     print("-" * 79)
     print("> Connectors w/ self-descriptions in metadata-broker")
     for k in result:
-        print("Connector:", k["@id"])
+        print("Connector ID:", k["@id"])
+        print("Access URL:", k["ids:hasEndpoint"][0]["ids:accessURL"]["@id"].split('/router')[0])
+        print("Agent ID:", k["ids:maintainer"]["@id"])
+        print("-")
 
     print("-" * 79)
     print("> Connectors w/ data apps")
