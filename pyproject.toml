@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "tsg-client"
+version = "0.1.0"
+description = "TSG Client is a Python library for interacting with the TNO Security Gateway (TSG). It provides a simple and easy-to-use interface for tasks such as: Connecting to TSG connectors, Retrieving connector self-descriptions, Working with catalogs and artifacts, Requesting and consuming data artifacts, Knowing what connectors are in the dataspace, Take advantage of the OpenAPI functionalities"
+authors = [
+    "Carolina Catorze <carolina.catorze@inesctec.pt>",
+    "Vasco Guedes <vasco.r.maia@inesctec.pt>",
+    "José Ricardo Andrade <jose.r.andrade@inesctec.pt>",
+    "José Luís Rodrigues <jose.l.rodrigues@inesctec.pt>",
+]
+readme = "README.md"
+license = "LICENSE"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+loguru = "~0.7.2"
+python-dotenv = "~1.0.0"
+requests = "~2.31.0"
+myst_parser = "~2.0.0"
+sphinx = "~7.2.6"
+sphinx-rtd-theme = "~2.0.0"
+ruff = "^0.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
