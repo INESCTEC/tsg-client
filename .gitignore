@@ -32,6 +32,11 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+conda-meta
+include
+ssl
+share
+bin
 MANIFEST
 
 # PyInstaller

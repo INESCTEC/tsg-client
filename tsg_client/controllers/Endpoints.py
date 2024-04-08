@@ -11,3 +11,4 @@ class Endpoints:
     ARTIFACTS_PROVIDER = "api/artifacts/provider"
     CONTRACT_REQUEST = "api/artifacts/consumer/contractRequest"
     OPEN_API = "openapi"
+    AUTH_USERS_MANAGER = "api/auth/users"

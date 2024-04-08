@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import bcrypt
 import urllib.parse
 
 from datetime import datetime
@@ -480,3 +481,67 @@ class TSGController:
         )
 
         return rsp.json()
+
+    def new_administrative_user(self, id, password, roles):
+
+        bytes = password.encode('utf-8')
+        hash = bcrypt.hashpw(bytes, bcrypt.gensalt())
+
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        payload = json.dumps({
+            "id": id,
+            "password": hash.decode('utf-8'),
+            "roles": roles
+        })
+
+        # Register de new Administrative User:
+        rsp = self.controller.post(
+            endpoint=self.endpoints.AUTH_USERS_MANAGER,
+            data=payload, headers=headers)
+
+        if rsp.status_code == 200:
+            return f"New Administrative User created with ID {id}"
+        elif rsp.status_code == 500:
+            return (f"Error creating Administrative User with ID {id}. One possible cause is that a user with ID {id} "
+                    f"already exists.")
+
+    def update_administrative_user(self, id, new_password, new_roles=None):
+
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        endpoint = f"{self.endpoints.AUTH_USERS_MANAGER}/{id}"
+
+        bytes = new_password.encode('utf-8')
+        hash = bcrypt.hashpw(bytes, bcrypt.gensalt())
+        payload = {
+            'id': id,
+            'password': hash.decode('utf-8')
+        }
+
+        if new_roles:
+            payload['roles'] = new_roles
+
+        # Delete an Administrative User:
+        rsp = self.controller.put(
+            endpoint=endpoint, data=json.dumps(payload), headers=headers)
+
+        if rsp.status_code == 200:
+            return f"Administrative User with ID {id} updated with success"
+
+    def delete_administrative_user(self, id):
+
+        endpoint = f"{self.endpoints.AUTH_USERS_MANAGER}/{id}"
+
+        # Delete an Administrative User:
+        rsp = self.controller.delete(
+            endpoint=endpoint)
+
+        if rsp.status_code == 200:
+            return f"Administrative User with ID {id} deleted with success"
+        elif rsp.status_code == 400:
+            return f"Error: Administrative User with ID {id} not found."

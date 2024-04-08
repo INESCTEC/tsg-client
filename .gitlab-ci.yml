@@ -25,11 +25,16 @@ mirror_to_github:
     - apk add --no-cache git
     - cd $CI_PROJECT_DIR  # Navigate to the project directory
     - git checkout main
-    - git config user.email "sentinel@inesctec.pt"
-    - git config user.name "cpes-sentinel"
-    - git reset $(git commit-tree HEAD^{tree} -m "Upload repository mirror")
+    - LAST_COMMIT_MSG=$(git log --format=%B -n 1)
+    - LAST_COMMIT_NAME=$(git log -1 --pretty=format:'%an')
+    - LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
+    
+    - git clone https://oauth2:${GITHUB_TOKEN}@github.com/CPES-Power-and-Energy-Systems/tsg-client.git github
+    - rm -rf .git
+    - mv github/.git .git
+    - rm -rf github
     - git add -A
-    - git remote add github https://github.com/CPES-Power-and-Energy-Systems/tsg-client
-    - git push --force
-      "https://oauth2:${GITHUB_TOKEN}@github.com/CPES-Power-and-Energy-Systems/tsg-client.git"
-      main
+    - git config user.email "$LAST_COMMIT_EMAIL"
+    - git config user.name "$LAST_COMMIT_NAME"
+    - git commit -m "$LAST_COMMIT_MSG"
+    - git push
