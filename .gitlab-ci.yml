@@ -1,5 +1,6 @@
 stages:
   - lint
+  - test
   - deploy
 
 ruff:
@@ -13,6 +14,17 @@ ruff:
   - source "$(poetry env info --path)/bin/activate" || exit 1
   script:
     - ruff check .
+
+unit_tests:
+  image:
+    name: python:3.9-slim-bookworm
+    entrypoint: [ "/usr/bin/env" ]
+  stage: test
+  before_script:
+    - pip install poetry
+    - poetry install
+  script:
+    - poetry run pytest unittests/
 
 mirror_to_github:
   stage: deploy

@@ -11,6 +11,7 @@
 [![Status](https://img.shields.io/badge/status-development-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
 ![CI](https://github.com/CPES-Power-and-Energy-Systems/tsg-client/actions/workflows/publish_docs.yml/badge.svg)
+![UnitTEST](https://img.shields.io/badge/unit_testing-passing-brightgreen)
 
 ## Overview
 
