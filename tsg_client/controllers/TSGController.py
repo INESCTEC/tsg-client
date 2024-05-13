@@ -10,7 +10,7 @@ from loguru import logger
 from tsg_client.controllers.RequestController import RequestController
 from tsg_client.controllers.Endpoints import Endpoints
 from tsg_client.controllers.SelfDescription import SelfDescription
-from tsg_client.utils.file_handling import save_text_file, save_pdf_file, save_csv_file
+from tsg_client.utils.file_handling import save_pdf_file, save_csv_file, save_json_file
 
 
 def is_contract_valid(contract_offer_dict):
@@ -265,7 +265,7 @@ class TSGController:
 
         content_type = rsp.headers.get("content-type")
         if content_type == "application/json":
-            return save_text_file(artifact_id, rsp.text, file_path)
+            return save_json_file(artifact_id, rsp.text, file_path)
         elif content_type == "application/pdf":
             return save_pdf_file(artifact_id, rsp.content, file_path)
         elif content_type == "text/csv":
@@ -273,7 +273,7 @@ class TSGController:
         else:
             return {"message": "Unsupported format"}
 
-    def publish_data_artifact(self, artifact, title, description, contract_offer):
+    def publish_data_artifact(self, artifact, title, description, contract_offer, catalog_id = None):
         """
         Publish a data artifact for this connector
 
@@ -293,10 +293,25 @@ class TSGController:
             "contractOffer": contract_offer,
         }
 
+        endpoint = self.endpoints.ARTIFACTS_PROVIDER 
+
         rsp = self.controller.post(
-            endpoint=self.endpoints.ARTIFACTS_PROVIDER, data=payload, files=payload
+            endpoint=endpoint, data=payload, files=payload
         )
-        return rsp.json()
+        rsp_json = rsp.json()
+
+        if catalog_id:
+            endpoint = f'api/resources/{catalog_id}'
+
+            headers={
+                'Content-type':'application/json',
+            }
+
+            self.controller.post(
+                endpoint=endpoint, data=rsp, headers=headers
+            )
+
+        return rsp_json
 
     def delete_artifact(self, artifact_id):
         """

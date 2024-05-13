@@ -29,6 +29,7 @@ Ensure that the required parameters are specified before executing the  request:
     - artifact_description: The description of the data artifact.
     - artifact_title: The title of the data artifact.
     - contract_offer_path: The path to the contract offer file.
+    - catalog_id (Optional): The id of the catalog to add the artificat. If the catalog does not exist it will be created
 
 """
 
@@ -62,12 +63,16 @@ if __name__ == "__main__":
     with open(contract_offer_path, 'r') as file:
         contract_offer_content = file.read()
 
+    with open(artifact_path, 'r') as file:
+        artifact_content = file.read()
+
     # Post artifact on our connector:
     data_artifact = conn.publish_data_artifact(
-        artifact=artifact_path,
+        artifact=artifact_content,
         contract_offer=contract_offer_content,
         description=artifact_description,
-        title=artifact_title
+        title=artifact_title,
+        # catalog_id="resources" # OPTIONAL
     )
 
     print("-" * 79)

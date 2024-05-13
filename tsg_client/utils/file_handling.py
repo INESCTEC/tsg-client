@@ -1,12 +1,12 @@
 import os
 
 
-def save_text_file(artifact_id, content, path="."):
-    txt_filename = f"{artifact_id}.txt"
-    txt_path = os.path.join(path, txt_filename)
-    with open(txt_path, "w", encoding="utf-8") as txt_file:
-        txt_file.write(content)
-    return {"message": f"Text file saved to {txt_path}"}
+def save_json_file(artifact_id, content, path="."):
+    json_filename = f"{artifact_id}.json"
+    json_path = os.path.join(path, json_filename)
+    with open(json_path, "w", encoding="utf-8") as json_file:
+        json_file.write(content)
+    return {"message": f"Json file saved to {json_path}"}
 
 
 def save_pdf_file(artifact_id, content, path="."):

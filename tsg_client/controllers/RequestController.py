@@ -83,11 +83,12 @@ class RequestController:
             try:
                 response.json()
             except requests.exceptions.JSONDecodeError:
-                raise Exception(
-                    f"Response does not contain any JSON object. "
-                    f"Response status_code: {response.status_code}. "
-                    f"Response content: {response.content}"
-                )
+                if method != 'DELETE':
+                    raise Exception(
+                        f"Response does not contain any JSON object. "
+                        f"Response status_code: {response.status_code}. "
+                        f"Response content: {response.content}"
+                    )
 
         return response
 
