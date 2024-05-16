@@ -560,3 +560,36 @@ class TSGController:
             return f"Administrative User with ID {id} deleted with success"
         elif rsp.status_code == 400:
             return f"Error: Administrative User with ID {id} not found."
+        
+    def get_catalog(self):
+        """
+        Get catalogs from the connector.
+        """
+
+        rsp = self.controller.get(
+            endpoint=self.endpoints.RESOURCES, expected_status_code=200
+        )
+        catalogs_artifacts = []
+
+        try:
+            rsp_json = rsp.json()
+
+            for catalogs_artifacts in rsp_json:
+                catalogs_artifacts.append({'@type': catalogs_artifacts['@type'], '@id': catalogs_artifacts['@id']})
+
+        except ValueError as ve:
+            logger.exception(f"Error creating SelfDescription: {ve}")
+
+        return catalogs_artifacts
+    
+    def delete_catalog(self, catalog_id):
+        """
+        Delete catalog from the connector.
+        """
+
+        endpoint = f"{self.endpoints.RESOURCES}/{catalog_id}"
+
+        self.controller.delete(
+            endpoint=endpoint, expected_status_code=200
+        )
+        
