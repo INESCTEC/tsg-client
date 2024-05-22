@@ -15,13 +15,14 @@ license = "LICENSE"
 python = "^3.9"
 loguru = "^0.7.2"
 python-dotenv = "^1.0.0"
-requests = "^2.31.0"
+requests = ">=2.32.0"
 myst_parser = "^2.0.0"
 sphinx = "^7.2.6"
 sphinx-rtd-theme = "^2.0.0"
 ruff = "^0.3.2"
 bcrypt = "^4.1.2"
 pytest = "^8.1.1"
+jinja2 = "3.1.4"
 
 
 [tool.poetry.group.dev.dependencies]
