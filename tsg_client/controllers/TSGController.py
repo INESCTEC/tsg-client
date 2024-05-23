@@ -71,16 +71,19 @@ class TSGController:
         except Exception as e:
             raise Exception(f"Error connecting to the TSG connector: {repr(e)}")
 
-    def get_connector_selfdescription(self, connector_id, access_url, agent_id=""):
+    def get_connector_selfdescription(self,
+                                      access_url,
+                                      agent_id="",
+                                      connector_id=""):
         """
         Get self-descriptions from a connector from another dataspace
         participant, given its connector CONNECTOR_ID and ACCESS_URL.
 
-        :param connector_id: Connector ID
-        :type connector_id: str
         :param access_url: Access URL
         :type access_url: str
-        :param agent_id: Agent ID
+        :param connector_id: (optional) Connector ID
+        :type connector_id: str
+        :param agent_id: (optional)  Agent ID
         :type agent_id: str
         :return: SelfDescription object
         """
@@ -454,7 +457,7 @@ class TSGController:
         else:
             headers.update(_headers)
 
-        full_endpoint = f"{self.endpoints.OPEN_API}/{api_version}/{endpoint}"
+        full_endpoint = f"{self.endpoints.OPEN_API}/{api_version}{endpoint}"
 
         rsp = ""
         if method == "get":
@@ -497,6 +500,14 @@ class TSGController:
 
         return rsp.json()
 
+    def get_administrative_users(self):
+
+        # Get the Administrative Users:
+        rsp = self.controller.get(
+            endpoint=self.endpoints.AUTH_USERS_MANAGER)
+        
+        return rsp.json()
+    
     def new_administrative_user(self, id, password, roles):
 
         bytes = password.encode('utf-8')
