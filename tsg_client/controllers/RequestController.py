@@ -41,7 +41,9 @@ class RequestController:
         if headers is None:
             headers = self.headers
         else:
-            headers.update(self.headers)
+            for key, value in self.headers.items():
+                if key not in headers:
+                    headers[key] = value
 
         if base_url is None:
             base_url = self.base_url
