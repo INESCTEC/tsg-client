@@ -47,33 +47,51 @@ Python example scripts (and respective description) are also available in the [e
 - [Python 3.9+](https://www.python.org/downloads/)
 - [Poetry](https://python-poetry.org/docs/#installation)
 
+
 ### Installation steps
 
-To install the TSG-Client, please follow the steps below:
+#### Installing as a package
+
+Although the `tsg-client` is not yet published on public Python repositories of software (e.g., PyPI), you can install it (as a package) by directly referencing this repository URL. 
+
+You can use the command below to install it directly using pip.
+
+```bash
+pip install git+https://github.com/CPES-Power-and-Energy-Systems/tsg-client.git
+```
+
+Do not forget that you will need to set up some environment variables to use this library. You can find a more detailed documentation [here](https://cpes-power-and-energy-systems.github.io/tsg-client/).
+
+
+#### Cloning and local installation
+
+If you want to modify the source code of this library, it is recommended to clone and then use [Poetry](https://python-poetry.org) to create a virtual environment to install the library dependencies and do any modifications needed.
+
+To do this, please follow the steps below:
 
 1. Clone the repository.
 
 ```bash
-$ git clone https://github.com/CPES-Power-and-Energy-Systems/tsg-client.git
+git clone https://github.com/CPES-Power-and-Energy-Systems/tsg-client.git
 ```
 
 2. Assuming you have Poetry [installed](https://python-poetry.org/docs/#installation), run the following command to install the required dependencies:
 
 ```bash
-$ poetry install
+poetry install
 ```
 
 3. Activate the virtual environment*:
 
 ```bash
-$ poetry shell
+poetry shell
 ```
 
 Now you are ready to use the TSG-Client.
 
 > *It's possible to use poetry without virtual environments (although recommended). For more info see Poetry [documentation](https://python-poetry.org/docs/configuration/#virtualenvscreate).
 
-## Adding new dependencies
+#####  Adding new dependencies
 
 To add a new dependency to the project, use the following command:
 

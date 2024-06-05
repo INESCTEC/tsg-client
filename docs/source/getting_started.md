@@ -31,36 +31,50 @@ It provides a simple and easy-to-use interface for tasks such as:
 
 - **Python**: Install Python (version 3.9+)
 
-- **Install Python requirements:**
-  - Open a terminal and execute the following command:
-    ```bash
-    pip install -r requirements.txt
-    ```
 
 
-### Clone the project and setup the environment
+#### Installing as a package
 
-To install the TSG-Client, please follow the steps below:
+Although the `tsg-client` is not yet published on public Python repositories of software (e.g., PyPI), you can install it (as a package) by directly referencing this repository URL. 
 
-  1. Clone the repository.
+You can use the command below to install it directly using pip.
 
 ```bash
-$ git clone https://github.com/CPES-Power-and-Energy-Systems/tsg-client.git
+pip install git+https://github.com/CPES-Power-and-Energy-Systems/tsg-client.git
 ```
 
-  2. (optional) Create a virtual environment and activate it.
+Do not forget that you will need to set up some environment variables to use this library. You can find mode details on the [Set up environment variables](#set-up-environment-variables) section.
 
-  3. Install the required dependencies:
+
+#### Cloning and local installation
+
+If you want to modify the source code of this library, it is recommended to clone and then use [Poetry](https://python-poetry.org) to create a virtual environment to install the library dependencies and do any modifications needed.
+
+To do this, please follow the steps below:
+
+
+1. Clone the repository.
 
 ```bash
-$ pip install -r requirements.txt
+git clone https://github.com/CPES-Power-and-Energy-Systems/tsg-client.git
 ```
 
-  4. Run the following command to install the python library:
+2. Assuming you have Poetry [installed](https://python-poetry.org/docs/#installation), run the following command to install the required dependencies:
 
 ```bash
-$ pip install .
+poetry install
 ```
+
+3. Activate the virtual environment*:
+
+```bash
+poetry shell
+```
+
+Now you are ready to use the TSG-Client.
+
+> *It's possible to use poetry without virtual environments (although recommended). For more info see Poetry [documentation](https://python-poetry.org/docs/configuration/#virtualenvscreate).
+
 
 Once you install the library, you'll be able to use the TSG-Client in your Python projects by just importing it (see basic example below):
 
