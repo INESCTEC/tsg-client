@@ -99,6 +99,7 @@ print(self_description)
 result = conn.query_metadata_broker()
 print(result)
 ```
+Note: `api_key` must be a key with `ROLE_ADMIN` role. This role can be added through the UI or in the file `values.yaml`.
 
 ### Set up environment variables
 
