@@ -83,7 +83,7 @@ class ResourceCatalog:
     def from_dict(obj: Any) -> "ResourceCatalog":
         _id = str(obj.get("@id"))
         _offeredResource = [
-            OfferedResource.from_dict(y) for y in obj.get("ids:offeredResource")
+            OfferedResource.from_dict(y) for y in obj.get("ids:offeredResource", [])
         ]
         return ResourceCatalog(_id, _offeredResource)
 

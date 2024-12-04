@@ -2,7 +2,7 @@
 
 Example - Publish a new data artifact via your connector
 
-Last update: 2024-01-27
+Last update: 2024-11-05
 
 This  request publishes a data artifact on a custom connector using a connection to the connector.
 It uses a pre-established connection from the examples  request to our connector.
@@ -63,18 +63,15 @@ if __name__ == "__main__":
     with open(contract_offer_path, 'r') as file:
         contract_offer_content = file.read()
 
-    with open(artifact_path, 'r') as file:
-        artifact_content = file.read()
-
-    # Post artifact on our connector:
-    data_artifact = conn.publish_data_artifact(
-        artifact=artifact_content,
-        contract_offer=contract_offer_content,
-        description=artifact_description,
-        title=artifact_title,
-        # catalog_id="resources" # OPTIONAL
-    )
-
+    # Open the artifact file in binary mode:
+    with open(artifact_path, 'rb') as artifact_file:
+        data_artifact = conn.publish_data_artifact(
+            title=artifact_title,
+            artifact_file=artifact_file,
+            description=artifact_description,
+            contract_offer=contract_offer_content
+        )
+        
     print("-" * 79)
     print("Data Artifact:")
     print(data_artifact)

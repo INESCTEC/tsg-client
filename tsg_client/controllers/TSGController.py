@@ -276,45 +276,52 @@ class TSGController:
         else:
             return {"message": "Unsupported format"}
 
-    def publish_data_artifact(self, artifact, title, description, contract_offer, catalog_id = None):
+    def publish_data_artifact(self, artifact_file, title, description, contract_offer, catalog_id=None):
         """
         Publish a data artifact for this connector
 
-        :param artifact: Artifact object
-        :type artifact: str
         :param title: Artifact title
         :type title: str
+        :param artifact_file: Multipart file containing the artifact
+        :type artifact_file: file-like object
         :param description: Artifact description
         :type description: str
         :param contract_offer: Contract offer
         :type contract_offer: str
+        :param catalog_id: Catalog ID (optional)
+        :type catalog_id: str
         """
+
         payload = {
-            "artifact": artifact,
             "title": title,
             "description": description,
             "contractOffer": contract_offer,
         }
 
-        endpoint = self.endpoints.ARTIFACTS_PROVIDER 
+        files = {
+            'artifact': artifact_file
+        }
+
+        endpoint = self.endpoints.ARTIFACTS_PROVIDER
 
         rsp = self.controller.post(
-            endpoint=endpoint, data=payload, files=payload
+            endpoint=endpoint, data=payload, files=files
         )
         rsp_json = rsp.json()
 
         if catalog_id:
             endpoint = f'api/resources/{catalog_id}'
 
-            headers={
-                'Content-type':'application/json',
+            headers = {
+                'Content-type': 'application/json',
             }
 
             self.controller.post(
-                endpoint=endpoint, data=rsp, headers=headers
+                endpoint=endpoint, data=rsp_json, headers=headers
             )
 
         return rsp_json
+
 
     def delete_artifact(self, artifact_id):
         """

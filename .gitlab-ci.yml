@@ -46,7 +46,7 @@ mirror_to_github:
   - LAST_COMMIT_MSG=$(git log --format=%B -n 1)
   - LAST_COMMIT_NAME=$(git log -1 --pretty=format:'%an')
   - LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
-  - git clone https://oauth2:${GITHUB_TOKEN}@github.com/CPES-Power-and-Energy-Systems/tsg-client.git
+  - git clone https://oauth2:${GITHUB_TOKEN}@github.com/INESCTEC/tsg-client.git
     github
   - rm -rf .git
   - mv github/.git .git
