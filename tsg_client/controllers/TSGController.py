@@ -292,6 +292,28 @@ class TSGController:
         :type catalog_id: str
         """
 
+        ids_permission = [
+            permission["@id"] for permission in json.loads(contract_offer).get('ids:permission', [])
+        ]
+
+        if ids_permission:
+            rsp = self.controller.get(endpoint=self.endpoints.OFFERS)
+            rsp_json = rsp.json()
+
+            used_ids_permission = [
+                permission["@id"]
+                for obj in rsp_json
+                for permission in obj.get("ids:permission", [])
+            ]
+
+            ids_permission_set = set(ids_permission)
+            used_ids_permission_set = set(used_ids_permission)
+
+            common_permissions = ids_permission_set & used_ids_permission_set
+
+            if common_permissions:
+                raise ValueError("It is not allowed to reuse ids:Permission @id on contracts.")
+        
         payload = {
             "title": title,
             "description": description,
